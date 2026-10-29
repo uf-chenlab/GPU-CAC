@@ -1,0 +1,20 @@
+# variables: data avec pstyle pcoeff nsteps rebuild
+units metal
+boundary s s s
+atom_style ${avec}
+comm_style cac
+newton off
+read_data ${data}
+pair_style ${pstyle}
+pair_coeff ${pcoeff}
+timestep 0.001
+compute Ntemp all cac/nodal/temp
+velocity all create 300 4928 dist gaussian
+fix NVE all cac/nve
+thermo_style custom step c_Ntemp pe press
+thermo_modify format float %24.16e
+thermo ${nsteps}
+if "${rebuild} == 1" then "neigh_modify every 1 delay 0 check no"
+dump dv all cac/nodal/virial 1 ${vdump}
+dump dn all cac/nodal/forces 1 ${nf}
+run ${nsteps}

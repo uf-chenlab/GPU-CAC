@@ -1,0 +1,10 @@
+units metal
+boundary s s s
+atom_style atomic
+read_data ${data}
+pair_style ${pstyle}
+pair_coeff ${pcoeff}
+compute vp all pressure NULL virial
+thermo_style custom step pe c_vp
+thermo_modify format float %24.16e
+run 0

@@ -1,0 +1,16 @@
+units metal
+boundary s s s
+atom_style ${avec}
+comm_style cac
+newton off
+read_data ${data}
+pair_style ${pstyle}
+pair_coeff ${pcoeff}
+timestep 0.001
+compute vp all pressure NULL virial
+dump dv all cac/nodal/virial 1 vir_p.dump
+thermo_style custom step pe c_vp press
+thermo_modify format float %24.16e
+thermo 1
+fix NVE all cac/nve
+run 1
